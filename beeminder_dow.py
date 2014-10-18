@@ -31,7 +31,8 @@ def dow_spec(string):
 
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('goal', type=str, help="the goal to work on")
-parser.add_argument('dow_spec', type=dow_spec, help="the days to add a holiday")
+parser.add_argument('dow_spec', type=dow_spec, help="days to add a holiday")
+
 
 args = parser.parse_args()
 
