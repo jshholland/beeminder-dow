@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# -*-: coding: utf-8 -*-
+# coding: utf-8
 """Utility to add regular weekly holidays to a Beeminder goal.
 
 The dow_spec argument should be 7 characters long, corresponding to the
