@@ -13,6 +13,7 @@ a dow_spec of the form "mtwtf--", "yyyyy--", "ΔΤΤΠΠ--", or "пвсчп--".
 """
 
 import argparse
+import os.path
 
 import requests
 
@@ -32,8 +33,11 @@ def dow_spec(string):
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('goal', type=str, help="the goal to work on")
 parser.add_argument('dow_spec', type=dow_spec, help="days to add a holiday")
+parser.add_argument('--api-key-file', '-k', type=argparse.FileType('r'),
+                    help="file containing api key (default: %(default)s)",
+                    default=os.path.expanduser('~/.beem_api_key'))
 
 
 args = parser.parse_args()
 
-print(args.dow_spec)
+print(args)
