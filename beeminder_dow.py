@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*-: coding: utf-8 -*-
 """Utility to add regular weekly holidays to a Beeminder goal.
 
 The dow_spec argument should be 7 characters long, corresponding to the
@@ -26,7 +27,7 @@ def dow_spec(string):
     for day, char in zip(days, string):
         spec[day] = char != '-'
     return spec
-        
+
 
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('goal', type=str, help="the goal to work on")
