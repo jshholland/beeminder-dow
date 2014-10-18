@@ -14,6 +14,7 @@ a dow_spec of the form "mtwtf--", "yyyyy--", "ΔΤΤΠΠ--", or "пвсчп--".
 
 import argparse
 import os.path
+import sys
 
 import requests
 
@@ -36,8 +37,23 @@ parser.add_argument('dow_spec', type=dow_spec, help="days to add a holiday")
 parser.add_argument('--api-key-file', '-k', type=argparse.FileType('r'),
                     help="file containing api key (default: %(default)s)",
                     default=os.path.expanduser('~/.beem_api_key'))
-
+parser.add_argument('--base-url', help="base url to make requests against",
+                    default="https://www.beeminder.com/api/v1")
 
 args = parser.parse_args()
 
-print(args)
+base = args.base_url
+token = args.api_key_file.read().strip()
+
+params = {'auth_token': token}
+
+response = requests.get(base + '/users/me.json', params=params)
+username = response.json()['username']
+
+r = requests.get(base + '/users/{}/goals/{}.json'.format(username,
+                                                         args.goal),
+                 params=params)
+
+if r.status_code == 404:
+    print("Goal not found")
+    sys.exit(1)
