@@ -50,7 +50,7 @@ parser.add_argument('--api-key-file', '-k', type=argparse.FileType('r'),
                     help="file containing api key (default: %(default)s)",
                     default=os.path.expanduser('~/.beem_api_key'))
 parser.add_argument('--base-url', help="base url to make requests against",
-                    default="https://www.beeminder.com/api/v1")
+                    default='https://www.beeminder.com/api/v1')
 
 args = parser.parse_args()
 
