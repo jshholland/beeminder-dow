@@ -59,8 +59,7 @@ params = {'auth_token': token}
 response = requests.get(base + '/users/me.json', params=params)
 username = response.json()['username']
 
-r = requests.get(base + '/users/{}/goals/{}.json'.format(username,
-                                                         args.goal),
+r = requests.get(base + '/users/{}/goals/{}.json'.format(username, args.goal),
                  params=params)
 
 if r.status_code == 404:
