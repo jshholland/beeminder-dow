@@ -21,14 +21,17 @@ import requests
 
 
 def dow_spec(string):
-    """Verify and convert the a dow_spec argument."""
-    spec = {}
-    days = ['mo', 'tu', 'we', 'th', 'fr', 'sa', 'su']
+    """Verify and convert the a dow_spec argument.
+
+    The format returned is a list of bools such that for any datetime.date
+    object, spec[date.weekday()] is True iff the goal should run on that day.
+    """
+    spec = [True] * 7
     if len(string) != 7:
         msg = "{} should be exactly 7 characters long".format(string)
         raise argparse.ArgumentTypeError(msg)
-    for day, char in zip(days, string):
-        spec[day] = char != '-'
+    for i, char in enumerate(string):
+        spec[i] = char != '-'
     return spec
 
 
