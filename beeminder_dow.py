@@ -68,6 +68,8 @@ if r.status_code == 404:
 
 today = datetime.date.today()
 horizon = today + datetime.timedelta(weeks=1)
-start_date = next_monday(horizon)
+cur_date = next_monday(horizon)
 
-print("Next Monday after akrasia horizon is", start_date)
+print("Next Monday after akrasia horizon is", cur_date)
+
+
