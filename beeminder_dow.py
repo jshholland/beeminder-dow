@@ -13,6 +13,7 @@ a dow_spec of the form "mtwtf--", "yyyyy--", "ΔΤΤΠΠ--", or "пвсчп--".
 """
 
 import argparse
+import datetime
 import os.path
 import sys
 
@@ -29,6 +30,14 @@ def dow_spec(string):
     for day, char in zip(days, string):
         spec[day] = char != '-'
     return spec
+
+
+def next_monday(date):
+    """Return the datetime.date of the next Monday after date."""
+    weekday = date.weekday()
+    # monday is 0
+    diff = 7 - weekday
+    return date + datetime.timedelta(days=diff)
 
 
 parser = argparse.ArgumentParser(description=__doc__)
@@ -57,3 +66,9 @@ r = requests.get(base + '/users/{}/goals/{}.json'.format(username,
 if r.status_code == 404:
     print("Goal not found")
     sys.exit(1)
+
+today = datetime.date.today()
+horizon = today + datetime.timedelta(weeks=1)
+start_date = next_monday(horizon)
+
+print("Next Monday after akrasia horizon is", start_date)
