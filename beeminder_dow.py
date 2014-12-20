@@ -7,7 +7,7 @@
 # details.
 #
 # More information is available from the project homepage at
-# https://github.com/jshholland/beeminder_dow
+# https://github.com/jshholland/beeminder-dow
 #
 """Utility to add regular weekly holidays to a Beeminder goal.
 
