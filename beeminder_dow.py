@@ -82,12 +82,14 @@ if r.status_code == 404:
     print("Goal not found")
     sys.exit(1)
 
+r = r.json()
+
 today = datetime.date.today()
 horizon = today + datetime.timedelta(weeks=1)
 cur_date = next_monday(horizon)
-end_date = datetime.date.fromtimestamp(r.json()['goaldate'])
-rate = r.json()['rate']
-roadall = r.json()['roadall']
+end_date = datetime.date.fromtimestamp(r['goaldate'])
+rate = r['rate']
+roadall = r['roadall']
 
 should_apply = itertools.cycle(args.dow_spec)
 
