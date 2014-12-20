@@ -47,7 +47,7 @@ parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('goal', type=str, help="the goal to work on")
 parser.add_argument('dow_spec', type=dow_spec, help="days to add a holiday")
 parser.add_argument('--api-key-file', '-k', type=argparse.FileType('r'),
-                    help="file containing api key (default: %(default)s)",
+                    help="file containing API key (default: %(default)s)",
                     default=os.path.expanduser('~/.beem_api_key'))
 parser.add_argument('--base-url', help="base url to make requests against",
                     default='https://www.beeminder.com/api/v1')
