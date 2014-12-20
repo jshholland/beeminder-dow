@@ -14,6 +14,7 @@ a dow_spec of the form "mtwtf--", "yyyyy--", "ΔΤΤΠΠ--", or "пвсчп--".
 
 import argparse
 import datetime
+import itertools
 import os.path
 import sys
 
@@ -72,7 +73,15 @@ if r.status_code == 404:
 today = datetime.date.today()
 horizon = today + datetime.timedelta(weeks=1)
 cur_date = next_monday(horizon)
+end_date = datetime.date.fromtimestamp(r.json()['goaldate'])
+rate = r.json()['rate']
+roadall = r.json()['roadall']
 
-print("Next Monday after akrasia horizon is", cur_date)
+should_apply = itertools.cycle(args.dow_spec)
 
+rle = (len(list(g)) for k, g in itertools.groupby(should_apply))
+
+print(list(itertools.islice(rle, 30)))
+
+increase = args.dow_spec[0]
 
