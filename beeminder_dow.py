@@ -19,6 +19,9 @@ is which.
 
 For example, a goal which should only run on weekdays would translate to
 a dow_spec of the form "mtwtf--", "yyyyy--", "ΔΤΤΠΠ--", or "пвсчп--".
+
+The API key specified by the -k/--api-key option can be obtained by
+visiting https://www.beeminder.com/api/v1/auth_token.json.
 """
 
 import argparse
