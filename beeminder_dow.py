@@ -1,5 +1,14 @@
 #!/usr/bin/env python3
 # coding: utf-8
+#
+# Copyright © 2014 Josh Holland <josh@inv.alid.pw>
+#
+# This file is released under the BSD licence; see the COPYING file for
+# details.
+#
+# More information is available from the project homepage at
+# https://github.com/jshholland/beeminder_dow
+#
 """Utility to add regular weekly holidays to a Beeminder goal.
 
 The dow_spec argument should be 7 characters long, corresponding to the
