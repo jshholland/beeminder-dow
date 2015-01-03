@@ -33,6 +33,25 @@ import sys
 import requests
 
 
+# General functions
+
+
+def run_length_encode(seq):
+    for _, g in itertools.groupby(seq):
+        yield len(list(g))
+
+
+def next_monday(date):
+    """Return the datetime.date of the next Monday after date."""
+    weekday = date.weekday()
+    # monday is 0
+    diff = 7 - weekday
+    return date + datetime.timedelta(days=diff)
+
+
+# Specific functions for this script
+
+
 def dow_spec(string):
     """Verify and convert the a dow_spec argument.
 
@@ -46,14 +65,6 @@ def dow_spec(string):
     for i, char in enumerate(string):
         spec[i] = char != '-'
     return spec
-
-
-def next_monday(date):
-    """Return the datetime.date of the next Monday after date."""
-    weekday = date.weekday()
-    # monday is 0
-    diff = 7 - weekday
-    return date + datetime.timedelta(days=diff)
 
 
 def get_response(base_url, goal, token):
@@ -70,11 +81,6 @@ def get_response(base_url, goal, token):
         sys.exit(1)
 
     return r.json()
-
-
-def run_length_encode(seq):
-    for _, g in itertools.groupby(seq):
-        yield len(list(g))
 
 
 def main(args):
