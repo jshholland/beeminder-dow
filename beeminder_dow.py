@@ -56,46 +56,56 @@ def next_monday(date):
     return date + datetime.timedelta(days=diff)
 
 
-parser = argparse.ArgumentParser(description=__doc__)
-parser.add_argument('goal', type=str, help="the goal to work on")
-parser.add_argument('dow_spec', type=dow_spec, help="days to add a holiday")
-parser.add_argument('--api-key-file', '-k', type=argparse.FileType('r'),
-                    help="file containing API key (default: %(default)s)",
-                    default=os.path.expanduser('~/.beem_api_key'))
-parser.add_argument('--base-url', help="base url to make requests against",
-                    default='https://www.beeminder.com/api/v1')
+def get_response(base_url, token):
+    """Get a response from base_url using token."""
+    params = {'auth_token': token}
 
-args = parser.parse_args()
+    response = requests.get(base_url + '/users/me.json', params=params)
+    username = response.json()['username']
 
-base = args.base_url
-token = args.api_key_file.read().strip()
+    r = requests.get(base_url + '/users/{}/goals/{}.json'.format(username, args.goal), params=params)
 
-params = {'auth_token': token}
+    if r.status_code == 404:
+        print("Goal not found")
+        sys.exit(1)
 
-response = requests.get(base + '/users/me.json', params=params)
-username = response.json()['username']
+    return r.json()
 
-r = requests.get(base + '/users/{}/goals/{}.json'.format(username, args.goal),
-                 params=params)
 
-if r.status_code == 404:
-    print("Goal not found")
-    sys.exit(1)
+def run_length_encode(seq):
+    for _, g in itertools.groupby(seq):
+        yield len(list(g))
 
-r = r.json()
 
-today = datetime.date.today()
-horizon = today + datetime.timedelta(weeks=1)
-cur_date = next_monday(horizon)
-end_date = datetime.date.fromtimestamp(r['goaldate'])
-rate = r['rate']
-roadall = r['roadall']
+def main(args):
+    """Run the program with command line args args."""
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('goal', type=str, help="the goal to work on")
+    parser.add_argument('dow_spec', type=dow_spec, help="days to add a holiday")
+    parser.add_argument('--api-key-file', '-k', type=argparse.FileType('r'),
+                        help="file containing API key (default: %(default)s)",
+                        default=os.path.expanduser('~/.beem_api_key'))
+    parser.add_argument('--base-url', help="base url to make requests against",
+                        default='https://www.beeminder.com/api/v1')
 
-should_apply = itertools.cycle(args.dow_spec)
+    ns = parser.parse_args(ns)
 
-rle = (len(list(g)) for k, g in itertools.groupby(should_apply))
+    r = get_response(ns.base_url, ns.api_key_file.read().strip())
 
-print(list(itertools.islice(rle, 30)))
+    today = datetime.date.today()
+    horizon = today + datetime.timedelta(weeks=1)
+    cur_date = next_monday(horizon)
+    end_date = datetime.date.fromtimestamp(r['goaldate'])
+    rate = r['rate']
+    roadall = r['roadall']
 
-increase = args.dow_spec[0]
+    should_apply = itertools.cycle(ns.dow_spec)
 
+    rle = run_length_encode(should_apply)
+
+    print(list(itertools.islice(rle, 30)))
+
+    increase = ns.dow_spec[0]
+
+if __name__ == '__main__':
+    main(sys.argv[1:])
