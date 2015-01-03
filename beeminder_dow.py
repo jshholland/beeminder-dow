@@ -88,7 +88,7 @@ def main(args):
     parser.add_argument('--base-url', help="base url to make requests against",
                         default='https://www.beeminder.com/api/v1')
 
-    ns = parser.parse_args(ns)
+    ns = parser.parse_args(args)
 
     r = get_response(ns.base_url, ns.api_key_file.read().strip())
 
