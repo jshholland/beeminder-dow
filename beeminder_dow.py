@@ -56,14 +56,14 @@ def next_monday(date):
     return date + datetime.timedelta(days=diff)
 
 
-def get_response(base_url, token):
+def get_response(base_url, goal, token):
     """Get a response from base_url using token."""
     params = {'auth_token': token}
 
     response = requests.get(base_url + '/users/me.json', params=params)
     username = response.json()['username']
 
-    r = requests.get(base_url + '/users/{}/goals/{}.json'.format(username, args.goal), params=params)
+    r = requests.get(base_url + '/users/{}/goals/{}.json'.format(username, goal), params=params)
 
     if r.status_code == 404:
         print("Goal not found")
@@ -90,7 +90,7 @@ def main(args):
 
     ns = parser.parse_args(args)
 
-    r = get_response(ns.base_url, ns.api_key_file.read().strip())
+    r = get_response(ns.base_url, ns.goal, ns.api_key_file.read().strip())
 
     today = datetime.date.today()
     horizon = today + datetime.timedelta(weeks=1)
